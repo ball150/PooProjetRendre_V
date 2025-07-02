@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Cahier de Texte{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --accent: #4895ef;
+            --sidebar-bg: #fff;
+            --sidebar-active: #e0e7ff;
+            --sidebar-text: #222;
+            --sidebar-icon: #2564eb;
+            --main-bg: #f6f8fc;
+            --card-bg: #fff;
+            --border: #e9ecef;
+            --avatar-bg: #e0e7ff;
+            --sidebar-shadow: 2px 0 16px rgba(44,62,80,0.07);
+
+            /* DARK */
+            --dark-bg: #161a2b;
+            --dark-main: #232745;
+            --dark-card: #21243a;
+            --dark-sidebar: #181b32;
+            --dark-active: #2542b2;
+            --dark-text: #d1d6ed;
+            --dark-border: #232745;
+        }
+        body {
+            background: var(--main-bg);
+            font-family: 'Inter', Arial, sans-serif;
+            color: var(--sidebar-text);
+            transition: background .3s, color .3s;
+        }
+        .sidebar {
+            width: 245px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            box-shadow: var(--sidebar-shadow);
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem 1rem 1.5rem;
+            transition: background .3s, color .3s;
+        }
+        .sidebar .logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2.4rem;
+        }
+        .sidebar .user {
+            display: flex; flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        .sidebar .user-avatar {
+            background: var(--avatar-bg);
+            color: var(--sidebar-icon);
+            font-weight: bold;
+            font-size: 1.15rem;
+            border-radius: 100px;
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 0.7rem;
+        }
+        .sidebar small { color: #6b7280; }
+        .sidebar a {
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-weight: 500;
+            margin: .45rem 0;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: .7rem 1rem;
+            border-radius: .8rem;
+            font-size: 1.03em;
+            transition: background .19s, color .19s, font-weight .1s;
+        }
+        .sidebar a.active,
+        .sidebar a:hover {
+            background: var(--sidebar-active);
+            color: var(--sidebar-icon);
+            font-weight: 600;
+        }
+        .main-content {
+            margin-left: 245px;
+            padding: 2rem 2rem 1rem 2rem;
+            min-height: 100vh;
+            background: var(--main-bg);
+            transition: background .3s, color .3s;
+        }
+        .card {
+            border: none;
+            border-radius: 1.2rem;
+            background: var(--card-bg);
+            box-shadow: 0 4px 20px 0 rgba(44,62,80,0.04);
+            transition: background .3s, color .3s, border .3s;
+        }
+        .alert {
+            border-radius: .7em;
+        }
+
+        /* --- DARK MODE --- */
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+        .dark-mode .sidebar {
+            background: var(--dark-sidebar);
+            color: var(--dark-text);
+            box-shadow: 2px 0 18px rgba(44,62,80,0.12);
+        }
+        .dark-mode .sidebar .logo,
+        .dark-mode .sidebar a,
+        .dark-mode .sidebar small {
+            color: #b9c1ec !important;
+        }
+        .dark-mode .sidebar .user-avatar {
+            background: #253d75;
+            color: #7ad3f8;
+        }
+        .dark-mode .sidebar a.active,
+        .dark-mode .sidebar a:hover {
+            background: var(--dark-active) !important;
+            color: #fff !important;
+        }
+        .dark-mode .main-content {
+            background: var(--dark-main);
+            color: var(--dark-text);
+        }
+        .dark-mode .card {
+            background: var(--dark-card) !important;
+            color: var(--dark-text) !important;
+            border: 1px solid var(--dark-border);
+        }
+        .dark-mode .alert {
+            background-color: #1c2133 !important;
+            border-color: #394163 !important;
+            color: #e3e9f6 !important;
+        }
+        .dark-mode .btn-outline-dark {
+            border-color: #4a509a !important;
+            color: #d1d6ed !important;
+            background: #212853 !important;
+        }
+        .dark-mode .btn-outline-dark:hover {
+            background: #3159c7 !important;
+            color: #fff !important;
+        }
+        .dark-mode ::selection {
+            background: #23347c;
+            color: #fff;
+        }
+        /* --- DARK MODE BUTTON EN HAUT A DROITE --- */
+        .dark-toggle-btn {
+            position: fixed !important;
+            top: 1.5rem;
+            right: 1.5rem;
+            left: auto;
+            bottom: auto;
+            z-index: 2200;
+            background: #fff;
+            border: 1.5px solid #4361ee;
+            color: #4361ee;
+            border-radius: 30px;
+            font-size: 1.12em;
+            box-shadow: 0 6px 32px 0 rgba(67,97,238,.08);
+            padding: 0.58em 1.35em 0.58em 1em;
+            display: flex;
+            align-items: center;
+            gap: .7em;
+            transition: background .18s, color .18s;
+        }
+        .dark-toggle-btn:hover {
+            background: #4361ee;
+            color: #fff;
+            border-color: #4361ee;
+        }
+        .dark-mode .dark-toggle-btn {
+            background: #233b6e;
+            color: #b9c1ec;
+            border-color: #233b6e;
+        }
+        .dark-mode .dark-toggle-btn:hover {
+            background: #4361ee;
+            color: #fff;
+            border-color: #4361ee;
+        }
+        @media (max-width: 900px) {
+            .sidebar { width: 70px; padding-left: .6rem; }
+            .main-content { margin-left: 70px; padding: 1.3rem .5rem 1rem 1rem; }
+            .sidebar .logo, .sidebar .user, .sidebar a span { display: none; }
+            .sidebar a { justify-content: center; padding: .7rem 0; }
+        }
+    </style>
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <div class="sidebar">
+        <div class="logo">
+            <i class='bx bxs-book'></i> <span>Cahier de Texte</span>
+        </div>
+        <div class="user">
+            <div class="user-avatar">{{ current_user.username[:2]|upper }}</div>
+            <div style="font-weight:600">{{ current_user.username }}</div>
+            <small>
+                {% if current_user.role_id == 1 %}Chef de filière
+                {% elif current_user.role_id == 2 %}Enseignant
+                {% elif current_user.role_id == 3 %}Responsable
+                {% endif %}
+            </small>
+        </div>
+        {% if current_user.role_id == 1 %}
+            <a href="{{ url_for('chef') }}"><i class='bx bx-home-alt'></i> <span>Tableau de bord</span></a>
+            <a href="{{ url_for('voir_seances') }}"><i class='bx bx-calendar'></i> <span>Séances</span></a>
+            <a href="{{ url_for('voir_emploi') }}"><i class='bx bx-time'></i> <span>Emploi du temps</span></a>
+            <a href="{{ url_for('gestion_utilisateurs') }}"><i class='bx bx-user'></i> <span>Utilisateurs</span></a>
+            <a href="{{ url_for('liste_fiches_suivi') }}"><i class='bx bx-spreadsheet'></i> <span>Fiches de suivi</span></a>
+            <a href="{{ url_for('logout') }}"><i class='bx bx-exit'></i> <span>Déconnexion</span></a>
+        {% elif current_user.role_id == 2 %}
+            <a href="{{ url_for('enseignant') }}"><i class='bx bx-home-alt'></i> <span>Tableau de bord</span></a>
+            <a href="{{ url_for('mes_cours') }}"><i class='bx bx-book-alt'></i> <span>Mes cours</span></a>
+            <a href="{{ url_for('toutes_seances_enseignant') }}"><i class='bx bx-calendar'></i> <span>Mes séances</span></a>
+            <a href="{{ url_for('suivi_heures') }}"><i class='bx bx-bar-chart-alt-2'></i> <span>Suivi heures</span></a>
+            <a href="{{ url_for('logout') }}"><i class='bx bx-exit'></i> <span>Déconnexion</span></a>
+        {% elif current_user.role_id == 3 %}
+            <a href="{{ url_for('responsable') }}"><i class='bx bx-home-alt'></i> <span>Tableau de bord</span></a>
+            <a href="{{ url_for('cahier_responsable') }}"><i class='bx bx-book-open'></i> <span>Cahier de texte</span></a>
+            <a href="{{ url_for('logout') }}"><i class='bx bx-exit'></i> <span>Déconnexion</span></a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} text-center">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- BOUTON MODE SOMBRE EN HAUT À DROITE -->
+    <button onclick="toggleDarkMode()" class="dark-toggle-btn">
+        <span id="moon-icon" style="display:inline;"><i class='bx bx-moon'></i></span>
+        <span id="sun-icon" style="display:none;"><i class='bx bx-sun'></i></span>
+        <span class="d-none d-md-inline" id="toggle-text">Mode sombre</span>
+    </button>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            // Toggle icon & text
+            const isDark = document.body.classList.contains("dark-mode");
+            document.getElementById("moon-icon").style.display = isDark ? "none" : "inline";
+            document.getElementById("sun-icon").style.display = isDark ? "inline" : "none";
+            document.getElementById("toggle-text").textContent = isDark ? "Mode clair" : "Mode sombre";
+            localStorage.setItem("dark-mode", isDark);
+        }
+        window.onload = () => {
+            if (localStorage.getItem("dark-mode") === "true") {
+                document.body.classList.add("dark-mode");
+                document.getElementById("moon-icon").style.display = "none";
+                document.getElementById("sun-icon").style.display = "inline";
+                document.getElementById("toggle-text").textContent = "Mode clair";
+            }
+        };
+    </script>
+</body>
+</html>

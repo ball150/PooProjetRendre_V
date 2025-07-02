@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Suivi des heures{% endblock %}
+
+{% block content %}
+<h3 class="mb-4 text-center">📈 Suivi des heures par cours</h3>
+
+<canvas id="heuresChart" width="100%" height="50"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('heuresChart').getContext('2d');
+    const heuresChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|tojson }},
+            datasets: [
+                {
+                    label: 'Heures attribuées',
+                    data: {{ attribuees|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                },
+                {
+                    label: 'Heures réalisées',
+                    data: {{ realisees|tojson }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nombre d\'heures'
+                    }
+                }
+            }
+        }
+    });
+</script>
+<a href="{{ url_for('enseignant') }}" class="btn-retour">
+    <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+</a>
+{% endblock %}

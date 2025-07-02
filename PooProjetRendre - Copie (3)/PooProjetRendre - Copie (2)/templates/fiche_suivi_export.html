@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Fiche de Suivi - {{ cours.name }}</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Durée</th>
+            <th>Contenu</th>
+            <th>Validée</th>
+        </tr>
+        {% for s in seances %}
+        <tr>
+            <td>{{ s.date }}</td>
+            <td>{{ s.heure_debut }}</td>
+            <td>{{ s.heure_fin }}</td>
+            <td>{{ s.duree }}</td>
+            <td>{{ s.contenu }}</td>
+            <td>{{ 'Oui' if s.valide else 'Non' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <p>Signature de l'enseignant : __________________________</p>
+</body>
+</html>

@@ -1,0 +1,15 @@
+texte_emploi = "\n".join([
+    f"- {s['date']} de {s['heure_debut']} à {s['heure_fin']} : {s['cours']}"
+    for s in seances
+])
+
+message = f"""Bonjour {ens['username']},
+
+Voici votre emploi du temps de la semaine :
+
+{texte_emploi}
+
+Cordialement,
+UFR SI
+"""
+msg = MIMEText(message, "plain")

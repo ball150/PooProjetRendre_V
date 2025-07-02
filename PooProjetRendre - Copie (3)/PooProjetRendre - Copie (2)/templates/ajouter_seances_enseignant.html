@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Ajouter une Séance{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-8">
+        <h3 class="mb-0">📌 Ajouter une nouvelle séance</h3>
+    </div>
+    <div class="col-4 text-end">
+        <a href="{{ url_for('toutes_seances_enseignant') }}" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Retour
+        </a>
+    </div>
+</div>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} text-center mb-3">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="course_id" class="form-label">Cours concerné</label>
+            <select name="course_id" id="course_id" class="form-control" required>
+                <option value="" disabled {% if not course_id %}selected{% endif %}>— Choisir un cours —</option>
+                {% for c in cours %}
+                    <option value="{{ c.id }}" {% if course_id and course_id == c.id %}selected{% endif %}>
+                        {{ c.name }} (Attribué : {{ c.volume_horaire }}h | Réalisé : {{ c.heures_realisees or 0 }}h)
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" name="date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="heure_debut" class="form-label">Heure de début</label>
+            <input type="time" name="heure_debut" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="heure_fin" class="form-label">Heure de fin</label>
+            <input type="time" name="heure_fin" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="duree" class="form-label">Durée (en heures)</label>
+            <input type="number" step="0.1" min="0.1" name="duree" class="form-control" required>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success">✅ Ajouter la séance</button>
+            <a href="{{ url_for('toutes_seances_enseignant') }}" class="btn btn-secondary">🔙 Retour</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Fiches de Suivi - Chef de Filière{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Titre et description -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h3 class="mb-0">
+            📄 Fiches de suivi pédagogique
+            <span class="text-muted fs-6 d-block" style="font-size:1rem;">Tous les cours</span>
+        </h3>
+        <!-- Optionnel : Bouton d’export général
+        <a href="#" class="btn btn-outline-success btn-sm">⬇️ Exporter toutes les fiches</a>
+        -->
+    </div>
+
+    <!-- Statistiques rapides (optionnel, supprime si inutile) -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-2">
+                <div class="h4 mb-1">📚</div>
+                <span>Cours total</span>
+                <div class="fs-5">{{ cours_list|length }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-2">
+                <div class="h4 mb-1">👨‍🏫</div>
+                <span>Enseignants assignés</span>
+                <div class="fs-5">
+                    {{ cours_list|selectattr('enseignant')|list|length }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-2">
+                <div class="h4 mb-1">❌</div>
+                <span>Cours non assignés</span>
+                <div class="fs-5">
+                    {{ cours_list|rejectattr('enseignant')|list|length }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableau des cours -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 4%;">#</th>
+                    <th style="width: 38%;">Intitulé du cours</th>
+                    <th style="width: 13%;">Volume horaire</th>
+                    <th style="width: 25%;">Enseignant</th>
+                    <th style="width: 20%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for cours in cours_list %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td class="fw-bold">{{ cours.name }}</td>
+                    <td>
+                        <span class="badge bg-info text-dark">
+                            {{ cours.volume_horaire }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if cours.enseignant %}
+                            <span class="badge bg-primary">{{ cours.enseignant }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Non assigné</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('fiche_suivi_cours', cours_id=cours.id) }}" class="btn btn-outline-primary btn-sm">
+                            📄 Voir la fiche de suivi
+                        </a>
+                        <!-- Optionnel : autre action, par ex. éditer -->
+                        {# <a href="#" class="btn btn-outline-secondary btn-sm">✏️ Modifier</a> #}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

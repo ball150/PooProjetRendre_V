@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Mes Séances{% endblock %}
+
+{% block content %}
+<h3 class="text-center my-4">📚 Toutes mes séances</h3>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Date</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Durée</th>
+        <th>Cours</th>
+        <th>Contenu</th>
+        <th>Validée</th>
+        <th>Absences</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in seances %}
+      <tr>
+        <td>{{ s.date }}</td>
+        <td>{{ s.heure_debut }}</td>
+        <td>{{ s.heure_fin }}</td>
+        <td>{{ s.duree }} h</td>
+        <td>{{ s.cours }}</td>
+        <td>{{ s.contenu or "—" }}</td>
+        <td>
+          {% if s.valide %} ✅ {% else %} ⏳ {% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('gerer_absences', session_id=s.id) }}" class="btn btn-warning btn-sm">
+            Gérer absences
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Mes Cours{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:900px;">
+    <h3 class="text-center mb-4">📚 Mes cours attribués</h3>
+    <table class="table table-bordered align-middle shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Nom du cours</th>
+                <th>Volume horaire</th>
+                <th>Heures réalisées</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cours %}
+            <tr>
+                <td>{{ c.name }}</td>
+                <td>{{ c.volume_horaire }} h</td>
+                <td>{{ c.heures_realisees or 0 }} h</td>
+                <td class="d-flex gap-2">
+                    <a href="{{ url_for('seances_cours', cours_id=c.id) }}" class="btn btn-primary btn-sm">
+                        📅 Voir les séances
+                    </a>
+                    <a href="{{ url_for('ajouter_seance_enseignant', cours_id=c.id) }}" class="btn btn-success btn-sm">
+                        ➕ Ajouter séance
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<a href="{{ url_for('enseignant') }}" class="btn-retour">
+    <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+</a>
+{% endblock %}

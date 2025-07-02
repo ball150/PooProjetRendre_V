@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmation de votre compte</title>
+</head>
+<body>
+  <h2>Bonjour {{ username }},</h2>
+  <p>Merci de vous être inscrit sur notre application de cahier de texte.</p>
+  <p>Pour activer votre compte, cliquez simplement sur le lien ci-dessous :</p>
+
+  <p>
+    <a href="{{ confirm_url }}" style="background-color: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">
+      Activer mon compte
+    </a>
+  </p>
+
+  <p>Ce lien expirera dans 1 heure pour des raisons de sécurité.</p>
+
+  <p>— L’équipe pédagogique</p>
+</body>
+</html>

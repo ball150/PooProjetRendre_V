@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Emploi du Temps{% endblock %}
+
+{% block content %}
+<h3 class="text-center mt-4">📆 Emploi du Temps Hebdomadaire</h3>
+
+<table class="table table-bordered table-striped mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Jour</th>
+            <th>Heure</th>
+            <th>Cours</th>
+            <th>Enseignant</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ligne in emploi %}
+        <tr>
+            <td>{{ ligne.jour }}</td>
+            <td>{{ ligne.heure }}</td>
+            <td>{{ ligne.cours }}</td>
+            <td>{{ ligne.enseignant or "Non assigné" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

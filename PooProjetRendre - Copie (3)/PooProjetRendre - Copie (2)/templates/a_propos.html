@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}À propos de l'application{% endblock %}
+
+{% block page_title %}À propos{% endblock %}
+
+{% block page_header %}
+Bienvenue sur la plateforme <b>Cahier de Texte Numérique</b> de l'UFR SI.
+Un outil innovant pour moderniser, simplifier et valoriser le suivi pédagogique à l'université.
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <!-- MISSION -->
+  <div class="col-md-6">
+    <div class="card shadow-sm p-4 h-100 wow fadeInUp">
+      <h4><i class="fa-solid fa-bullseye text-primary"></i> Notre Mission</h4>
+      <p>
+        Offrir aux enseignants, étudiants et responsables un environnement numérique simple, fiable et sécurisé pour suivre toutes les activités pédagogiques.
+      </p>
+      <ul>
+        <li>Gestion simplifiée du cahier de texte</li>
+        <li>Validation et traçabilité des séances</li>
+        <li>Suivi des absences, export, notifications…</li>
+      </ul>
+    </div>
+  </div>
+  <!-- VALEURS -->
+  <div class="col-md-6">
+    <div class="card shadow-sm p-4 h-100 wow fadeInUp" data-wow-delay="0.2s">
+      <h4><i class="fa-solid fa-handshake-angle text-success"></i> Nos Valeurs</h4>
+      <ul class="mb-0">
+        <li>Transparence & Sécurité</li>
+        <li>Accessibilité</li>
+        <li>Innovation continue</li>
+        <li>Respect des données et confidentialité</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CHIFFRES CLÉS / STATISTIQUES -->
+<div class="row g-4 mt-4">
+  <div class="col-md-3 col-6">
+    <div class="card text-center p-3 shadow-sm">
+      <div class="fs-1 text-primary"><i class="fa-solid fa-users"></i></div>
+      <h6>+200</h6>
+      <small>Utilisateurs actifs</small>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card text-center p-3 shadow-sm">
+      <div class="fs-1 text-success"><i class="fa-solid fa-book-open"></i></div>
+      <h6>+50</h6>
+      <small>Cours suivis</small>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card text-center p-3 shadow-sm">
+      <div class="fs-1 text-warning"><i class="fa-solid fa-calendar-days"></i></div>
+      <h6>+1 500</h6>
+      <small>Séances enregistrées</small>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card text-center p-3 shadow-sm">
+      <div class="fs-1 text-info"><i class="fa-solid fa-bolt"></i></div>
+      <h6>99.9%</h6>
+      <small>Disponibilité</small>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE INTERACTIVE (histoire de l'app ou de l'UFR) -->
+<div class="mt-5">
+  <h4><i class="fa-solid fa-timeline"></i> Histoire et évolution</h4>
+  <ul class="timeline">
+    <li>
+      <span class="timeline-date">2023</span>
+      <div class="timeline-dot"></div>
+      <span>Lancement du projet “Cahier de texte numérique” par la Licence 2 Géomatique</span>
+    </li>
+    <li>
+      <span class="timeline-date">2024</span>
+      <div class="timeline-dot"></div>
+      <span>Déploiement à l’UFR SI & premières fonctionnalités avancées</span>
+    </li>
+    <li>
+      <span class="timeline-date">2025</span>
+      <div class="timeline-dot"></div>
+      <span>Refonte complète, nouveaux rôles, interface premium et export automatique</span>
+    </li>
+  </ul>
+</div>
+
+<!-- FONCTIONNALITÉS INTERACTIVES -->
+<div class="mt-5">
+  <h4><i class="fa-solid fa-star text-warning"></i> Fonctionnalités marquantes</h4>
+  <div class="row">
+    <div class="col-md-6">
+      <ul>
+        <li><b>Suivi pédagogique</b> visuel et temps réel</li>
+        <li>Gestion <b>automatisée de l’emploi du temps</b></li>
+        <li><b>Notifications</b> intelligentes (emails, alertes absences)</li>
+        <li>Exports <b>PDF</b> et <b>Excel</b> des suivis</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <ul>
+        <li>Dashboard interactif et statistiques</li>
+        <li>Design responsive & dark mode</li>
+        <li>Accès par rôles : chef, enseignant, responsable</li>
+        <li>Support et guide intégrés (“Comment utiliser l’application ?”)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ ACCORDÉON (bonus interactif) -->
+<div class="mt-5">
+  <h4><i class="fa-solid fa-question-circle"></i> FAQ rapide</h4>
+  <div>
+    <details>
+      <summary><b>Comment créer mon compte ?</b></summary>
+      <div class="mt-2">Cliquez sur “S’inscrire”, puis renseignez vos informations. Un email de confirmation sera envoyé.</div>
+    </details>
+    <details class="mt-2">
+      <summary><b>Je n’arrive pas à valider une séance, que faire ?</b></summary>
+      <div class="mt-2">Vérifiez que toutes les informations sont saisies, puis contactez le responsable de classe si besoin.</div>
+    </details>
+    <details class="mt-2">
+      <summary><b>Où trouver le guide utilisateur ?</b></summary>
+      <div class="mt-2">Le guide complet est accessible dans le menu latéral ou <a href="{{ url_for('guide_utilisateur') }}">ici</a>.</div>
+    </details>
+  </div>
+</div>
+
+<!-- ZONE CONTACT RAPIDE -->
+<div class="mt-5 text-center">
+  <h5><i class="fa-solid fa-envelope"></i> Une question ? Un bug ?</h5>
+  <p>Contacte l’équipe projet : <a href="mailto:ton.email@ufrsi.edu.sn">ton.email@ufrsi.edu.sn</a></p>
+  <a href="{{ url_for('login') }}" class="btn btn-primary mt-2"><i class="fa-solid fa-arrow-left"></i> Retour connexion</a>
+</div>
+
+<!-- Styles supplémentaires pour timeline et effets -->
+<style>
+.timeline {
+  list-style: none; padding: 0;
+}
+.timeline li {
+  position: relative; margin-bottom: 2.1em; padding-left: 2.2em;
+}
+.timeline-date {
+  position: absolute; left: 0; font-weight: bold; color: #18b4f7; top: 0.08em;
+}
+.timeline-dot {
+  position: absolute; left: 1.1em; top: 0.25em; width: 12px; height: 12px;
+  background: #18b4f7; border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 8px #18b4f755;
+}
+details summary { cursor: pointer; font-size: 1.09em; }
+details[open] summary { color: #18b4f7; }
+details > div { background: #f3f8ff; border-radius: 8px; padding: 0.9em 1.1em; margin-top: 0.6em; }
+</style>
+{% endblock %}

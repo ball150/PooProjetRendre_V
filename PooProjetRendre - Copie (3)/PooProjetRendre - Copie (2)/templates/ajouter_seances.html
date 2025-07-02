@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Ajouter une Séance{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:520px; margin:auto; box-shadow:0 4px 24px rgba(24,180,247,0.06); border-radius:16px;">
+    <form method="POST" autocomplete="off" style="padding:2em 1.7em;">
+
+
+        <div class="mb-3">
+            <label for="date" class="form-label" style="font-weight:600;">Date</label>
+            <input type="date" name="date" class="form-control" required>
+        </div>
+
+        <div class="row">
+            <div class="col mb-3">
+                <label for="heure_debut" class="form-label" style="font-weight:600;">Heure de début</label>
+                <input type="time" name="heure_debut" class="form-control" required>
+            </div>
+            <div class="col mb-3">
+                <label for="heure_fin" class="form-label" style="font-weight:600;">Heure de fin</label>
+                <input type="time" name="heure_fin" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="duree" class="form-label" style="font-weight:600;">Durée (en heures)</label>
+            <input type="number" step="0.1" name="duree" class="form-control" required>
+        </div>
+        <div class="mb-3 text-end text-muted" style="font-size:0.93em;">
+            Volume du cours : <strong>{{ cours.volume_horaire }}h</strong> &nbsp;|&nbsp;
+            Réalisées : <strong>{{ heures_realisees }}h</strong>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success px-4" style="font-weight:600;">
+                <i class="fa-solid fa-check"></i> Ajouter la séance
+            </button>
+            <a href="{{ url_for('seances_cours', cours_id=cours.id) }}" class="btn btn-secondary px-3">
+                <i class="fa-solid fa-arrow-left"></i> Retour
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

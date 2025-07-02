@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fb;
+            transition: background 0.3s, color 0.3s;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100%;
+            background: #4361ee;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5em 1em;
+            z-index: 100;
+        }
+        .sidebar .logo {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 1.2em;
+        }
+        .sidebar nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0.8em 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+            font-weight: 500;
+            transition: background 0.2s;
+            padding: 0.6em;
+            border-radius: 6px;
+        }
+        .sidebar nav a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .main-content {
+            margin-left: 220px;
+            padding: 1.5em 2em;
+            transition: background 0.3s, color 0.3s;
+        }
+        .topbar {
+            background: white;
+            padding: 1em 2em;
+            border-radius: 10px;
+            margin-bottom: 2em;
+            box-shadow: 0 2px 10px rgba(67, 97, 238, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s, color 0.3s;
+        }
+        .user-info {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+        /* Bouton Dark Mode */
+        .dark-mode-toggle {
+            background: #f0f4ff;
+            border: none;
+            border-radius: 50px;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(67,97,238,0.10);
+            margin-left: 1em;
+            font-size: 1.4em;
+        }
+        .dark-mode-toggle .fa-moon,
+        .dark-mode-toggle .fa-sun {
+            transition: color 0.3s, opacity 0.3s;
+            position: absolute;
+        }
+        .dark-mode-toggle .fa-sun {
+            color: #f9d923;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .dark-mode .dark-mode-toggle .fa-moon {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .dark-mode .dark-mode-toggle .fa-sun {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .dark-mode-toggle .fa-moon {
+            color: #22295a;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .dark-mode {
+            background: #23263a !important;
+            color: #e7e7e7 !important;
+        }
+        .dark-mode .sidebar {
+            background: #20234a !important;
+            color: #e7e7e7 !important;
+        }
+        .dark-mode .sidebar nav a {
+            color: #e7e7e7 !important;
+        }
+        .dark-mode .sidebar nav a:hover {
+            background: rgba(110, 130, 255, 0.20) !important;
+        }
+        .dark-mode .main-content {
+            background: #23263a !important;
+            color: #e7e7e7 !important;
+        }
+        .dark-mode .topbar {
+            background: #23263a !important;
+            color: #e7e7e7 !important;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.20) !important;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">📘 UFR SI</div>
+        <nav>
+            <a href="{{ url_for('chef') }}"><i class="fa fa-home"></i> Accueil</a>
+            <a href="{{ url_for('gestion_utilisateurs') }}"><i class="fa fa-users"></i> Utilisateurs</a>
+            <a href="{{ url_for('voir_emploi') }}"><i class="fa fa-clock"></i> Emploi</a>
+            <a href="{{ url_for('logout') }}"><i class="fa fa-sign-out-alt"></i> Déconnexion</a>
+        </nav>
+    </aside>
+    <div class="main-content">
+        <header class="topbar">
+            <div class="user-info">
+                Bonjour, {{ current_user.username }}
+            </div>
+            <button class="dark-mode-toggle" id="darkModeBtn" aria-label="Activer/désactiver le mode sombre">
+                <i class="fa-solid fa-moon"></i>
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <script>
+    // Activer/désactiver le mode sombre
+    function setDarkMode(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+    }
+    // Appliquer le choix précédent
+    if (localStorage.getItem('darkMode') === 'true') {
+        setDarkMode(true);
+    }
+    // Toggle au clic
+    document.getElementById('darkModeBtn').addEventListener('click', function() {
+        const isDark = !document.body.classList.contains('dark-mode');
+        setDarkMode(isDark);
+        localStorage.setItem('darkMode', isDark);
+    });
+    </script>
+</body>
+</html>

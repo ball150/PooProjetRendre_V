@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Cahier de Texte{% endblock %}
+
+{% block content %}
+<h3 class="mb-4 text-center">📒 Cahier de Texte - Validation des Séances</h3>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Date</th>
+            <th>Heure début</th>
+            <th>Heure fin</th>
+            <th>Durée</th>
+            <th>Cours</th>
+            <th>Enseignant</th>
+            <th>Contenu</th>
+            <th>État</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in seances %}
+        <tr>
+            <td>{{ s.date }}</td>
+            <td>{{ s.heure_debut }}</td>
+            <td>{{ s.heure_fin }}</td>
+            <td>{{ s.duree }}</td>
+            <td>{{ s.cours }}</td>
+            <td>{{ s.enseignant }}</td>
+            <td>{{ s.contenu or '–' }}</td>
+            <td>
+                {% if s.valide == 1 %}
+                    <span class="badge bg-success">Validée</span>
+                {% elif s.valide == 0 %}
+                    <span class="badge bg-danger">Rejetée</span>
+                {% else %}
+                    <span class="badge bg-secondary">En attente</span>
+                {% endif %}
+            </td>
+            <td>
+                <form method="post" class="d-flex gap-2">
+                    <input type="hidden" name="seance_id" value="{{ s.id }}">
+                    <button type="submit" name="action" value="valider" class="btn btn-sm btn-success">✅</button>
+                    <button type="submit" name="action" value="rejeter" class="btn btn-sm btn-danger">❌</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('responsable') }}" class="btn-retour">
+    <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+</a>
+{% endblock %}

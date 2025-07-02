@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">📊 Tableau de Bord du Chef de Département</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col">
+            <div class="card border-start border-4 border-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📅 Total de Séances</h5>
+                    <p class="card-text display-6 fw-bold text-primary">{{ total_seances }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card border-start border-4 border-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">✅ Séances Validées</h5>
+                    <p class="card-text display-6 fw-bold text-success">{{ seances_validees }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card border-start border-4 border-danger shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">❌ Séances Non Validées</h5>
+                    <p class="card-text display-6 fw-bold text-danger">{{ seances_non_validees }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card border-start border-4 border-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📚 Total de Cours</h5>
+                    <p class="card-text display-6 fw-bold text-warning">{{ total_cours }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card border-start border-4 border-info shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">👨‍🏫 Total d'Enseignants</h5>
+                    <p class="card-text display-6 fw-bold text-info">{{ total_enseignants }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

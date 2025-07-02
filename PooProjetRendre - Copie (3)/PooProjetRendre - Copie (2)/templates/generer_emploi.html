@@ -1,0 +1,251 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Générer Emploi du Temps{% endblock %}
+
+{% block content %}
+<div class="dashboard-section" style="max-width:800px; margin:auto;">
+
+    <!-- En-tête élégant -->
+    <div class="dashboard-header" style="background: linear-gradient(120deg, #4361ee 0%, #7209b7 100%);
+                                        color: white;
+                                        padding: 40px;
+                                        border-radius: 16px 16px 0 0;
+                                        position: relative;
+                                        overflow: hidden;
+                                        margin-bottom: 30px;">
+        <div style="position: absolute; top: 20px; right: 50px; width: 80px; height: 80px;
+                    background: rgba(255,255,255,0.15); border-radius: 20px; transform: rotate(15deg);"></div>
+        <div style="position: absolute; bottom: 30px; right: 120px; width: 80px; height: 80px;
+                    background: rgba(255,255,255,0.15); border-radius: 20px; transform: rotate(-10deg);"></div>
+        <div style="position: absolute; bottom: 50px; left: 80px; width: 80px; height: 80px;
+                    background: rgba(255,255,255,0.15); border-radius: 20px; transform: rotate(25deg);"></div>
+
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; position: relative; z-index: 2;
+                   display: flex; align-items: center; justify-content: center; gap: 15px;">
+            <i class="fas fa-calendar-alt"></i> Générer Emploi du Temps
+        </h1>
+        <p style="font-size: 1.2rem; opacity: 0.9; font-weight: 400; position: relative; z-index: 2;
+                  max-width: 600px; margin: 0 auto; text-align: center;">
+            Générez automatiquement un emploi du temps optimal pour votre établissement
+        </p>
+    </div>
+
+    <!-- Carte principale -->
+    <div class="schedule-card" style="background: linear-gradient(135deg, #f8faff 0%, #eef2ff 100%);
+                                     border-radius: 16px;
+                                     padding: 30px;
+                                     margin-bottom: 40px;
+                                     box-shadow: 0 8px 25px rgba(67, 97, 238, 0.12);
+                                     border: 1px solid #e0e7ff;
+                                     position: relative;
+                                     overflow: hidden;
+                                     text-align: center;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+                    background: linear-gradient(90deg, #4361ee 0%, #7209b7 100%);"></div>
+
+        <div class="schedule-icon" style="font-size: 4rem; color: #4361ee; margin-bottom: 20px;
+                                         animation: pulse 2s infinite;">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+
+        <p class="schedule-description" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; color: #4a5568;">
+            Notre système intelligent génère un emploi du temps équilibré en prenant en compte toutes les contraintes :
+            disponibilité des salles, spécialités des enseignants, créneaux horaires et équilibre des charges de travail.
+        </p>
+
+        <form method="GET" action="{{ url_for('generer_emploi') }}">
+            <button type="submit" class="btn-generate" style="padding: 18px 45px;
+                                                      border-radius: 12px;
+                                                      font-size: 1.2rem;
+                                                      font-weight: 600;
+                                                      cursor: pointer;
+                                                      transition: all 0.3s ease;
+                                                      display: inline-flex;
+                                                      align-items: center;
+                                                      justify-content: center;
+                                                      gap: 12px;
+                                                      border: none;
+                                                      background: linear-gradient(120deg, #4361ee 0%, #3a56d4 100%);
+                                                      color: white;
+                                                      box-shadow: 0 5px 20px rgba(67, 97, 238, 0.35);">
+                <i class="fas fa-magic"></i> Générer automatiquement
+            </button>
+        </form>
+
+        <div class="loading-bar" id="loadingBar" style="height: 5px; background: #e2e8f0;
+                                                       border-radius: 3px; overflow: hidden;
+                                                       margin-top: 25px; position: relative; display: none;">
+            <div class="loading-progress" id="loadingProgress" style="height: 100%; width: 0;
+                                                                      background: linear-gradient(90deg, #4361ee 0%, #7209b7 100%);
+                                                                      border-radius: 3px; transition: width 3s ease;"></div>
+        </div>
+    </div>
+
+    <!-- Bouton retour -->
+    <div style="text-align: center; margin-bottom: 40px;">
+        <a href="{{ url_for('chef') }}" class="btn-back" style="padding: 18px 45px;
+                                                       border-radius: 12px;
+                                                       font-size: 1.1rem;
+                                                       font-weight: 600;
+                                                       cursor: pointer;
+                                                       transition: all 0.3s ease;
+                                                       display: inline-flex;
+                                                       align-items: center;
+                                                       justify-content: center;
+                                                       gap: 12px;
+                                                       border: 2px solid #e0e7ff;
+                                                       background: white;
+                                                       color: #4361ee;
+                                                       text-decoration: none;">
+            <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+        </a>
+    </div>
+
+    <!-- Section avantages -->
+    <div class="features-container" style="background: #eef4ff; border-radius: 16px;
+                                          padding: 30px; border-left: 4px solid #4361ee;">
+        <h3 class="features-title" style="font-size: 1.4rem; font-weight: 600;
+                                         margin-bottom: 25px; color: #4361ee;
+                                         display: flex; align-items: center;
+                                         justify-content: center; gap: 10px;">
+            <i class="fas fa-star"></i> Avantages de notre système
+        </h3>
+
+        <div class="features-grid" style="display: grid;
+                                         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                                         gap: 25px;">
+            <div class="feature-item" style="display: flex; flex-direction: column;
+                                           align-items: center; gap: 12px; text-align: center;">
+                <div class="feature-icon" style="width: 70px; height: 70px;
+                                               background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+                                               border-radius: 50%; display: flex;
+                                               align-items: center; justify-content: center;
+                                               font-size: 1.8rem; color: #4361ee;">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <span class="feature-text" style="font-size: 1.05rem; font-weight: 500;">
+                    Génération ultra-rapide
+                </span>
+            </div>
+
+            <div class="feature-item" style="display: flex; flex-direction: column;
+                                           align-items: center; gap: 12px; text-align: center;">
+                <div class="feature-icon" style="width: 70px; height: 70px;
+                                               background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+                                               border-radius: 50%; display: flex;
+                                               align-items: center; justify-content: center;
+                                               font-size: 1.8rem; color: #4361ee;">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <span class="feature-text" style="font-size: 1.05rem; font-weight: 500;">
+                    Intelligence artificielle
+                </span>
+            </div>
+
+            <div class="feature-item" style="display: flex; flex-direction: column;
+                                           align-items: center; gap: 12px; text-align: center;">
+                <div class="feature-icon" style="width: 70px; height: 70px;
+                                               background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+                                               border-radius: 50%; display: flex;
+                                               align-items: center; justify-content: center;
+                                               font-size: 1.8rem; color: #4361ee;">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <span class="feature-text" style="font-size: 1.05rem; font-weight: 500;">
+                    Répartition équitable
+                </span>
+            </div>
+
+            <div class="feature-item" style="display: flex; flex-direction: column;
+                                           align-items: center; gap: 12px; text-align: center;">
+                <div class="feature-icon" style="width: 70px; height: 70px;
+                                               background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+                                               border-radius: 50%; display: flex;
+                                               align-items: center; justify-content: center;
+                                               font-size: 1.8rem; color: #4361ee;">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <span class="feature-text" style="font-size: 1.05rem; font-weight: 500;">
+                    Personnalisation avancée
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .btn-generate:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(67, 97, 238, 0.45);
+        background: linear-gradient(120deg, #3a56d4 0%, #5d0da5 100%);
+    }
+
+    .btn-generate:active {
+        transform: translateY(1px);
+    }
+
+    .btn-back:hover {
+        background: #f8faff;
+        border-color: #4361ee;
+    }
+
+    @media (max-width: 768px) {
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const generateBtn = document.querySelector('.btn-generate');
+        const loadingBar = document.getElementById('loadingBar');
+        const loadingProgress = document.getElementById('loadingProgress');
+
+        if (generateBtn) {
+            generateBtn.addEventListener('click', function(e) {
+                // Montrer la barre de progression
+                if (loadingBar) loadingBar.style.display = 'block';
+
+                // Simuler un chargement progressif
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 100) {
+                        clearInterval(interval);
+
+                        // Simulation de fin de génération
+                        setTimeout(() => {
+                            if (loadingBar) loadingBar.style.display = 'none';
+                            if (loadingProgress) loadingProgress.style.width = '0';
+
+                            // Afficher un message de succès
+                            alert("Emploi du temps généré avec succès !");
+                        }, 500);
+                    } else {
+                        width += 5;
+                        if (loadingProgress) loadingProgress.style.width = width + '%';
+                    }
+                }, 100);
+            });
+        }
+
+        // Animation pour les cartes de fonctionnalités
+        const featureItems = document.querySelectorAll('.feature-item');
+        featureItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, 300 + index * 150);
+        });
+    });
+</script>
+{% endblock %}

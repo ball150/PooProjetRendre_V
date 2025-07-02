@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Modifier Email Responsable{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Modifier l'email du responsable</h2>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="email" class="form-label">Nouvel email du responsable :</label>
+        <input type="email" class="form-control" id="email" name="email"
+               value="{{ responsable.email }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+</form>
+{% endblock %}

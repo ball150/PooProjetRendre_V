@@ -1,0 +1,128 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Fiche de suivi pédagogique{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <!-- En-tête Université -->
+    <div class="fiche-header mb-2 text-center">
+        UNIVERSITÉ IBA DER THIAM DE THIÈS<br>
+        <small>UNITE DE FORMATION ET DE RECHERCHE SCIENCES ET TECHNOLOGIE<br>
+        DÉPARTEMENT INFORMATIQUE</small>
+    </div>
+    <!-- Titre fiche -->
+    <div class="text-center my-4">
+        <h3>📄 FICHE DE SUIVI PÉDAGOGIQUE</h3>
+        <p class="text-muted mb-1">Suivi du cours et validation des séances</p>
+    </div>
+
+    <!-- Informations générales sous forme de cartes -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fw-bold mb-1">🎓 Filière</div>
+                <div>{{ filiere }}</div>
+                <div class="mt-2 text-muted"><small><b>Option :</b> {{ option }}</small></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fw-bold mb-1">📚 Cours</div>
+                <div>{{ cours.nom }}</div>
+                <div class="mt-2 text-muted"><small><b>Année :</b> {{ annee }}</small></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fw-bold mb-1">👨‍🏫 Enseignant</div>
+                <div>{{ cours.enseignant }}</div>
+                <div class="mt-2 text-muted"><small><b>Volume horaire :</b> {{ cours.volume_horaire }}</small></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Résumé des séances (optionnel, si tu veux un mini dashboard) -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">.
+            <div class="card shadow-sm text-center p-2">
+                <div class="h3 mb-0">📅</div>
+                <span>Séances réalisées</span>
+                <div class="fs-4">{{ nb_seances or seances|length }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-2">
+                <div class="h3 mb-0">✅</div>
+                <span>Séances validées</span>
+                <div class="fs-4">
+                    {{ seances|selectattr("valide")|list|length }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-2">
+                <div class="h3 mb-0">⏰</div>
+                <span>Heures totales</span>
+                <div class="fs-4">
+                    {{ seances|sum(attribute='duree') if seances else '--' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableau des séances -->
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-striped align-middle shadow-sm">
+            <thead>
+                <tr class="align-middle">
+                    <th>Date</th>
+                    <th>Heure début</th>
+                    <th>Heure fin</th>
+                    <th>Durée</th>
+                    <th>Contenu</th>
+                    <th>Validée</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if seances %}
+                    {% for seance in seances %}
+                    <tr>
+                        <td>{{ seance.date }}</td>
+                        <td>{{ seance.heure_debut }}</td>
+                        <td>{{ seance.heure_fin }}</td>
+                        <td>{{ seance.duree }}</td>
+                        <td>{{ seance.contenu }}</td>
+                        <td>
+                            {% if seance.valide %}
+                                <span class="badge bg-success">Oui</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Non</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Aucune séance enregistrée pour ce cours.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Signature -->
+    <div class="signature-box mt-5 mb-3">
+        <b>Signature de l'enseignant</b><br>
+        <span style="display: inline-block; width: 320px; border-bottom: 1px dotted #444; height: 32px;"></span>
+    </div>
+
+    <!-- Boutons actions -->
+    <div class="d-flex justify-content-center gap-3 mt-4 mb-2 btn-print">
+        <button class="btn btn-outline-primary" onclick="window.print()">🖨️ Imprimer la fiche</button>
+        <a href="{{ url_for('export_excel', cours_id=cours.id) }}" class="btn btn-success">⬇️ Exporter Excel</a>
+        <a href="{{ url_for('export_pdf', cours_id=cours.id) }}" class="btn btn-danger">⬇️ Exporter PDF</a>
+    </div>
+</div>
+
+
+{% endblock %}

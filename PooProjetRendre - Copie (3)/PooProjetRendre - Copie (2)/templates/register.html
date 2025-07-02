@@ -1,0 +1,31 @@
+<!-- register.html -->
+{% extends "auth_base.html" %}
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Inscription</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" name="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="role_id">Rôle</label>
+            <select name="role_id" id="role_id" class="form-control" required>
+                <option value="2">Enseignant</option>
+                <option value="3">Responsable de Classe</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-3">S'inscrire</button>
+    </form>
+</div>
+{% endblock %}

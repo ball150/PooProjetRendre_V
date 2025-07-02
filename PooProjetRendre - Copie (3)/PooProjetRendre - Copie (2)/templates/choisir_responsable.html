@@ -1,0 +1,81 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Désigner le responsable de classe{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h3 class="mb-4">🏅 Désigner un responsable de classe</h3>
+
+    {% if actuel_responsable %}
+        <div class="alert alert-info d-flex align-items-center mb-4 shadow-sm" role="alert">
+            <span class="me-3 fs-2">👤</span>
+            <div>
+                <div>
+                    <b>Responsable actuel :</b> <span class="fw-semibold">{{ actuel_responsable.username }}</span>
+                </div>
+                <small class="text-muted">{{ actuel_responsable.email }}</small>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-secondary mb-4 shadow-sm" role="alert">
+            <span class="me-2 fs-5">ℹ️</span>
+            Aucun responsable désigné pour le moment.
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% if etudiants %}
+        <div class="table-responsive shadow-sm">
+            <table class="table align-middle table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:40px"></th>
+                        <th>Nom d'utilisateur</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for etu in etudiants %}
+                    <tr>
+                        <td>
+                            <input type="radio" class="form-check-input" name="etudiant_id" value="{{ etu.id }}" id="etu{{ etu.id }}" required>
+                        </td>
+                        <td>
+                            <label for="etu{{ etu.id }}" class="mb-0 fw-medium" style="cursor:pointer">
+                                <span class="me-2">👤</span>{{ etu.username }}
+                            </label>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark">{{ etu.email }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary mt-4 px-5 fs-5">
+                ✅ Valider le responsable
+            </button>
+        </div>
+        {% else %}
+            <div class="alert alert-warning text-center mt-4">Aucun étudiant à afficher.</div>
+        {% endif %}
+    </form>
+</div>
+
+<!-- JS pour highlight la ligne sélectionnée -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const radios = document.querySelectorAll('input[name="etudiant_id"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('tbody tr').forEach(tr => tr.classList.remove('table-primary'));
+            if (radio.checked) {
+                radio.closest('tr').classList.add('table-primary');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

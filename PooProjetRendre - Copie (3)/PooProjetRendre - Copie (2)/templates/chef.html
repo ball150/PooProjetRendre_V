@@ -1,0 +1,407 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Chef de Département{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- En-tête du tableau de bord -->
+    <div class="dashboard-header">
+        <h1>Tableau de bord</h1>
+        <div class="welcome-message">
+            <h2>Bon après-midi, {{ current_user.nom }}</h2>
+            <p>Voici un aperçu de votre activité aujourd'hui</p>
+        </div>
+    </div>
+
+    <!-- Cartes de statistiques -->
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">{{ nb_enseignants or "--" }}</div>
+            <div class="stat-label">Enseignants</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🎓</div>
+            <div class="stat-value">{{ nb_etudiants or "--" }}</div>
+            <div class="stat-label">Étudiants</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">✔️</div>
+            <div class="stat-value">1/2</div>
+            <div class="stat-label">Séances valides</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value">1/2</div>
+            <div class="stat-label">En attente</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-value">2/4</div>
+            <div class="stat-label">Sanctions</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 50%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deux colonnes principales -->
+    <div class="dashboard-columns">
+        <!-- Colonne de gauche -->
+        <div class="left-column">
+            <!-- Séances du jour -->
+            <div class="dashboard-section">
+                <h3>Séances d'aujourd'hui</h3>
+                <div class="session-item">
+                    <div class="session-time">08:00 - 10:00</div>
+                    <div class="session-details">
+                        <div class="session-title">SIG</div>
+                        <div class="session-teacher">M.NDOUR</div>
+                    </div>
+                    <div class="session-status valid">Validé</div>
+                </div>
+                <div class="session-item">
+                    <div class="session-time">10:30 - 12:30</div>
+                    <div class="session-details">
+                        <div class="session-title">Physique</div>
+                        <div class="session-teacher">M.NDAO</div>
+                    </div>
+                    <div class="session-status pending">En attente</div>
+                </div>
+            </div>
+
+            <!-- Alertes -->
+            <div class="dashboard-section alerts-section">
+                <h3>Alertes importantes</h3>
+                <div class="alert-item">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>1 séance(s) en attente de validation</span>
+                </div>
+                <div class="alert-item">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>2 étudiant(s) avec sanctions</span>
+                </div>
+                <div class="alert-item">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>3 cours sans enseignant assigné</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne de droite - Actions rapides -->
+        <div class="right-column">
+            <div class="dashboard-section">
+                <h3>Actions rapides</h3>
+                <div class="quick-actions">
+                    <a href="{{ url_for('assigner_cours') }}" class="action-btn">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Assigner un cours</span>
+                    </a>
+                    <a href="{{ url_for('gestion_utilisateurs') }}" class="action-btn">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Gérer les enseignants</span>
+                    </a>
+                    <a href="{{ url_for('ajouter_cours') }}" class="action-btn">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Ajouter un cours</span>
+                    </a>
+                    <a href="{{ url_for('generer_emploi') }}" class="action-btn">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                        <span>Générer emploi du temps</span>
+                    </a>
+
+
+                    <a href="{{ url_for('envoyer_emploi_par_mail') }}" class="action-btn">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Envoyer emploi du temps</span>
+                    </a>
+                    <a href="{{ url_for('modifier_responsable') }}" class="action-btn">
+                        <i class="fa-solid fa-user-edit"></i>
+                        <span>Modifier responsable</span>
+                    </a>
+                    <a href="{{ url_for('liste_fiches_suivi') }}" class="action-btn">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Fiches de suivi</span>
+                    </a>
+                    <a href="{{ url_for('choisir_responsable') }}" class="action-btn">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Désigner responsable</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styles de base */
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --success-color: #4cc9f0;
+        --warning-color: #f72585;
+        --text-color: #2b2d42;
+        --light-gray: #f8f9fa;
+        --medium-gray: #e9ecef;
+        --dark-gray: #adb5bd;
+    }
+
+    body {
+        background-color: #f5f7ff;
+        color: var(--text-color);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Conteneur principal */
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    /* En-tête */
+    .dashboard-header {
+        margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .welcome-message h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+
+    .welcome-message p {
+        color: var(--dark-gray);
+        font-size: 1rem;
+    }
+
+    /* Cartes de statistiques */
+    .stats-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .stat-progress {
+        height: 6px;
+        background-color: var(--medium-gray);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    /* Colonnes */
+    .dashboard-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    @media (max-width: 992px) {
+        .dashboard-columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Sections */
+    .dashboard-section {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .dashboard-section h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1.25rem;
+        color: var(--primary-color);
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    /* Séances */
+    .session-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    .session-item:last-child {
+        border-bottom: none;
+    }
+
+    .session-time {
+        width: 100px;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+
+    .session-details {
+        flex-grow: 1;
+    }
+
+    .session-title {
+        font-weight: 600;
+    }
+
+    .session-teacher {
+        font-size: 0.85rem;
+        color: var(--dark-gray);
+    }
+
+    .session-status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .session-status.valid {
+        background-color: rgba(76, 201, 240, 0.1);
+        color: var(--success-color);
+    }
+
+    .session-status.pending {
+        background-color: rgba(247, 37, 133, 0.1);
+        color: var(--warning-color);
+    }
+
+    /* Alertes */
+    .alerts-section {
+        background-color: #fff9f9;
+    }
+
+    .alert-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0;
+    }
+
+    .alert-item i {
+        color: var(--warning-color);
+        margin-right: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    /* Actions rapides */
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem 0.5rem;
+        background-color: white;
+        border: 1px solid var(--medium-gray);
+        border-radius: 8px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+        border-color: var(--primary-color);
+    }
+
+    .action-btn i {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .action-btn span {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+</style>
+
+<script>
+    // Animation au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animation des cartes de stats
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+
+        // Animation des séances
+        const sessionItems = document.querySelectorAll('.session-item');
+        sessionItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, index * 150);
+        });
+    });
+</script>
+{% endblock %}

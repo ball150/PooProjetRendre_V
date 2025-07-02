@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Emploi du temps global</title>
+</head>
+<body>
+    <h3>Bonjour {{ responsable.username }},</h3>
+    <p>Voici l’emploi du temps global de la semaine :</p>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>Date</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Enseignant</th>
+            <th>Cours</th>
+        </tr>
+        {% for s in seances %}
+        <tr>
+            <td>{{ s.date }}</td>
+            <td>{{ s.heure_debut }}</td>
+            <td>{{ s.heure_fin }}</td>
+            <td>{{ s.enseignant }}</td>
+            <td>{{ s.cours }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Cordialement,<br>L’équipe pédagogique</p>
+</body>
+</html>

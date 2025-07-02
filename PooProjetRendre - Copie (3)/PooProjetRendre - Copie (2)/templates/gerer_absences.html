@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+{% block title %}Absences — saisie rapide{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header text-center">
+        <h1><i class="bi bi-clipboard-x me-2"></i>Saisie des Absences</h1>
+        <div class="session-info">
+            <h4 class="mb-0">
+                Séance du {{ session.date }}
+            </h4>
+            <p class="mb-0">{{ session.heure_debut }} - {{ session.heure_fin }}</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h5>Étudiants</h5>
+                <div class="stats-number" id="total-students">{{ etudiants|length }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h5>Présents</h5>
+                <div class="stats-number text-success" id="present-count">{{ etudiants|length }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h5>Absents</h5>
+                <div class="stats-number text-danger" id="absent-count">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Liste des étudiants -->
+        <div class="col-md-6">
+            <div class="list-container">
+                <h3 class="list-title"><i class="bi bi-people me-2"></i>Liste des Étudiants</h3>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" placeholder="Rechercher un étudiant..." id="search-input">
+                </div>
+
+                <ul class="list-group" id="students-list">
+                    {% for etu in etudiants %}
+                    <li class="list-group-item student-item present d-flex align-items-center" id="row-{{ etu.id }}">
+                        <span class="me-auto" id="nom-{{ etu.id }}">{{ etu.username }}</span>
+                        <button class="btn btn-absent btn-sm me-2"
+                                onclick="markAbsent({{ etu.id }}, {{ session.id }})"
+                                id="absent-btn-{{ etu.id }}">
+                            <i class="bi bi-x-circle me-1"></i>Absent
+                        </button>
+                        <span class="badge badge-present d-none" id="badge-{{ etu.id }}">Présent</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Liste des absents -->
+        <div class="col-md-6">
+            <div class="list-container">
+                <h3 class="list-title"><i class="bi bi-clipboard-x me-2"></i>Étudiants Absents</h3>
+
+                <div id="absent-list">
+                    <div class="empty-state">
+                        <i class="bi bi-emoji-smile"></i>
+                        <h4>Aucun absent</h4>
+                        <p>Tous les étudiants sont présents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4 mb-5">
+        <a href="{{ url_for('enseignant') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Retour
+        </a>
+        <button class="btn btn-primary" onclick="enregistrerAbsences()">
+            <i class="bi bi-save me-1"></i>Enregistrer les absences
+        </button>
+    </div>
+</div>
+
+<!-- CSS mis dans le block head si tu veux le déplacer -->
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --success-color: #4cc9f0;
+        --danger-color: #f72585;
+        --light-bg: #f8f9fa;
+    }
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+        max-width: 900px;
+    }
+    .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .session-info {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-top: 1rem;
+    }
+    .list-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    .list-title {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .student-item {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        border-radius: 8px;
+    }
+    .student-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .student-item.present {
+        border-left-color: #4cc9f0;
+    }
+    .student-item.absent {
+        border-left-color: var(--danger-color);
+    }
+    .btn-absent {
+        background-color: var(--danger-color);
+        color: white;
+        border: none;
+    }
+    .btn-absent:hover {
+        background-color: #d11466;
+    }
+    .btn-justified {
+        background-color: #7209b7;
+        color: white;
+        border: none;
+    }
+    .btn-justified:hover {
+        background-color: #5a078f;
+    }
+    .badge-present {
+        background-color: #4cc9f0;
+    }
+    .badge-absent {
+        background-color: var(--danger-color);
+    }
+    .badge-justified {
+        background-color: #7209b7;
+    }
+    .floating-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    .stats-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: #dee2e6;
+    }
+</style>
+
+<script>
+    let absents = [];
+    function updateCounters() {
+        const total = document.querySelectorAll('.student-item').length;
+        const absent = absents.length;
+        const present = total - absent;
+        document.getElementById('total-students').textContent = total;
+        document.getElementById('present-count').textContent = present;
+        document.getElementById('absent-count').textContent = absent;
+    }
+
+    function markAbsent(etudiant_id, session_id) {
+        fetch("{{ url_for('ajouter_absence_ajax') }}", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                session_id: session_id,
+                etudiant_id: etudiant_id,
+                justifie: 0
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success){
+                // Si déjà dans absents, on ne refait rien
+                if (absents.includes(etudiant_id)) return;
+                absents.push(etudiant_id);
+                updateCounters();
+
+                // Ajoute l’étudiant à la colonne droite
+                const absentList = document.getElementById('absent-list');
+                if (absentList.querySelector('.empty-state')) {
+                    absentList.innerHTML = '';
+                }
+                const studentName = document.getElementById('nom-' + etudiant_id).textContent;
+                const absentItem = document.createElement('div');
+                absentItem.className = 'list-group-item student-item absent d-flex align-items-center';
+                absentItem.id = `absent-${etudiant_id}`;
+                absentItem.innerHTML = `
+                    <span class="me-auto">${studentName}</span>
+                    <div class="btn-group">
+                        <button class="btn btn-justified btn-sm me-2"
+                                onclick="markJustified(${etudiant_id}, {{ session.id }})">
+                            <i class="bi bi-check-circle me-1"></i>Justifier
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm"
+                                onclick="removeAbsent(${etudiant_id})">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <span class="badge bg-danger badge-absent">Absent</span>
+                `;
+                absentList.appendChild(absentItem);
+
+                // Màj bouton dans liste de gauche
+                const studentItem = document.getElementById(`row-${etudiant_id}`);
+                studentItem.classList.remove('present');
+                studentItem.classList.add('absent');
+                studentItem.querySelector('.btn-absent').classList.add('d-none');
+                studentItem.querySelector('.badge').classList.remove('d-none');
+                studentItem.querySelector('.badge').textContent = 'Absent';
+                studentItem.querySelector('.badge').className = 'badge bg-danger badge-absent';
+            }
+        });
+    }
+
+    function markJustified(etudiant_id, session_id) {
+        fetch("{{ url_for('ajouter_absence_ajax') }}", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                session_id: session_id,
+                etudiant_id: etudiant_id,
+                justifie: 1
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success){
+                const absentItem = document.getElementById(`absent-${etudiant_id}`);
+                absentItem.querySelector('.btn-justified').classList.add('d-none');
+                absentItem.querySelector('.badge').textContent = 'Justifié';
+                absentItem.querySelector('.badge').className = 'badge bg-purple badge-justified';
+            }
+        });
+    }
+
+    function removeAbsent(id) {
+        absents = absents.filter(x => x !== id);
+        updateCounters();
+        // Supprime de la liste droite
+        const absentItem = document.getElementById(`absent-${id}`);
+        if (absentItem) absentItem.remove();
+        // Réactive à gauche
+        const studentItem = document.getElementById(`row-${id}`);
+        studentItem.classList.remove('absent');
+        studentItem.classList.add('present');
+        studentItem.querySelector('.btn-absent').classList.remove('d-none');
+        studentItem.querySelector('.badge').classList.add('d-none');
+        // Affiche "Aucun absent" si tout est vide
+        const absentList = document.getElementById('absent-list');
+        if (absentList.children.length === 0) {
+            absentList.innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-emoji-smile"></i>
+                    <h4>Aucun absent</h4>
+                    <p>Tous les étudiants sont présents</p>
+                </div>
+            `;
+        }
+    }
+
+    function enregistrerAbsences() {
+        alert("Absences enregistrées côté JS ! (À brancher sur la vraie logique serveur)");
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCounters();
+        // Recherche
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const items = document.querySelectorAll('#students-list .list-group-item');
+            items.forEach(item => {
+                const name = item.querySelector('.me-auto').textContent.toLowerCase();
+                item.style.display = name.includes(searchTerm) ? 'flex' : 'none';
+            });
+        });
+    });
+</script>
+
+{% endblock %}

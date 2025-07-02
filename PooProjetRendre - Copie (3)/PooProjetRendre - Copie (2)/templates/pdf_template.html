@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+    h2, h4 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Fiche de Suivi Pédagogique</h2>
+  <h4>Cours : {{ course.name }}</h4>
+  <p><strong>Volume Horaire :</strong> {{ course.volume_horaire }} heures</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Durée (h)</th>
+        <th>Contenu</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sessions %}
+      <tr>
+        <td>{{ s.date }}</td>
+        <td>{{ s.heure_debut }}</td>
+        <td>{{ s.heure_fin }}</td>
+        <td>{{ s.duree }}</td>
+        <td>{{ s.contenu }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Université Iba Der Thiam de Thiès - Département de Géomatique</p>
+    <p>Document généré automatiquement - {{ current_date }}</p>
+  </div>
+
+</body>
+</html>

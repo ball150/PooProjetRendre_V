@@ -1,0 +1,197 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Gestion des Enseignants{% endblock %}
+{% block page_title %}Gestion des Enseignants{% endblock %}
+
+{% block content %}
+<div class="dashboard-section" style="max-width:900px;margin:auto;">
+
+    <!-- Bouton retour au tableau de bord -->
+    <a href="{{ url_for('chef') }}" class="btn-retour">
+        <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+    </a>
+
+    <!-- Formulaire d'ajout d'enseignant -->
+    <form method="POST" class="teacher-form" style="margin-bottom:2em;">
+        <div class="form-row" style="display:flex;gap:1em;flex-wrap:wrap;">
+            <input name="username" class="form-control" placeholder="Nom d'utilisateur" required>
+            <input name="email" class="form-control" placeholder="Email" type="email" required>
+            <input name="password" class="form-control" placeholder="Mot de passe" type="password" required>
+            <button type="submit" class="btn-dashboard-add" style="min-width:120px;">
+                <i class="fa-solid fa-user-plus"></i> Ajouter
+            </button>
+        </div>
+    </form>
+
+    <!-- Tableau des enseignants -->
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width:60px;">ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th style="width:220px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in enseignants %}
+                <tr>
+                    <td>{{ user['id'] }}</td>
+                    <td>{{ user['username']|title }}</td>
+                    <td>{{ user['email'] }}</td>
+                    <td>
+                        <a href="{{ url_for('supprimer_enseignant', user_id=user['id']) }}"
+                           class="btn-table-delete"
+                           onclick="return confirm('Supprimer cet enseignant ?')">
+                            <i class="fa-solid fa-trash"></i> Supprimer
+                        </a>
+
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="empty-msg">Aucun enseignant trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Style spécifique pour tableau, formulaire et bouton retour -->
+<style>
+.dashboard-section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(67, 97, 238, 0.05);
+    padding: 2.1em 2em 2em 2em;
+    margin-bottom: 2em;
+}
+.btn-retour {
+    display: inline-block;
+    background: linear-gradient(90deg, #b1b2ff 65%, #4361ee 100%);
+    color: #273469;
+    font-weight: 600;
+    border: none;
+    border-radius: 7px;
+    padding: 0.44em 1.2em;
+    margin-bottom: 1.2em;
+    margin-right: 0.6em;
+    box-shadow: 0 1px 5px rgba(67,97,238,0.08);
+    font-size: 1em;
+    text-decoration: none;
+    transition: background 0.16s, color 0.16s;
+}
+.btn-retour:hover {
+    background: linear-gradient(90deg, #4361ee 65%, #4895ef 100%);
+    color: #fff;
+}
+.form-row {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    margin-bottom: 1.4em;
+}
+.teacher-form .form-control {
+    padding: 0.7em 1em;
+    border: 1.4px solid #d1d9ee;
+    border-radius: 7px;
+    font-size: 1.04em;
+    background: #f8faff;
+    transition: border 0.18s;
+    min-width: 120px;
+}
+.teacher-form .form-control:focus {
+    border-color: #4361ee;
+}
+.btn-dashboard-add {
+    background: linear-gradient(90deg, #4361ee 60%, #4895ef 100%);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 7px;
+    padding: 0.62em 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 0.45em;
+    transition: background 0.16s;
+}
+.btn-dashboard-add:hover {
+    background: linear-gradient(90deg, #3f37c9 60%, #4361ee 100%);
+}
+.table-responsive {
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(67,97,238,0.03);
+    overflow-x: auto;
+}
+.custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 0;
+    box-shadow: 0 3px 16px rgba(67, 97, 238, 0.05);
+}
+.custom-table th {
+    background: linear-gradient(90deg,#4361ee 60%,#4895ef 100%);
+    color: #fff;
+    font-size: 1.08em;
+    font-weight: 600;
+    padding: 0.85em 1.2em;
+    border: none;
+    letter-spacing: .01em;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.custom-table td {
+    background: #f8faff;
+    padding: 0.82em 1.2em;
+    border-bottom: 1px solid #eceefd;
+    vertical-align: middle;
+    transition: background 0.12s;
+    font-size: 1.01em;
+}
+.custom-table tbody tr:hover td {
+    background: #e9f1fd;
+}
+.btn-table-delete {
+    background: linear-gradient(90deg, #f72585 65%, #b5179e 100%);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 7px;
+    padding: 0.39em 1.1em;
+    box-shadow: 0 2px 8px rgba(247,37,133,0.08);
+    font-size: 0.98em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    transition: background 0.15s, box-shadow 0.11s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn-table-delete:hover {
+    background: linear-gradient(90deg,#b5179e 60%,#720026 100%);
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(183,23,158,0.16);
+}
+.empty-msg {
+    text-align: center;
+    color: #bbb;
+    font-style: italic;
+    font-size: 1.08em;
+    padding: 1.6em 0;
+}
+@media (max-width: 900px) {
+    .dashboard-section {padding: 1.2em 0.5em 1em 0.5em;}
+    .form-row {flex-direction: column; gap:0.7em;}
+}
+</style>
+{% endblock %}
+

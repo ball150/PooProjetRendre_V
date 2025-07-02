@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Connexion{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #f9f9f9;
+            --bg-dark: #1a1a1a;
+            --container-bg: #ffffff;
+            --container-bg-dark: #2d2d2d;
+            --text-light: #2d2d2d;
+            --text-dark: #e0e0e0;
+            --accent: #4a90e2;
+            --border-light: #d9d9d9;
+            --border-dark: #444444;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-dark: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: var(--text-light);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            top: 1.5em;
+            right: 1.5em;
+            background: var(--container-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: var(--text-light);
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            z-index: 1000; /* Assure que le bouton reste au-dessus de tout */
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background: var(--container-bg-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .dark-mode-toggle::after {
+            content: "Dark Mode";
+            position: absolute;
+            top: -2.5em;
+            right: 0;
+            background: var(--container-bg);
+            padding: 0.3em 0.6em;
+            border-radius: 4px;
+            font-size: 0.8em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .dark-mode-toggle:hover::after {
+            opacity: 1;
+        }
+
+        .auth-container {
+            background: var(--container-bg);
+            padding: 3em 4em;
+            width: 100%;
+            max-width: 1200px;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px var(--shadow-light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1; /* Sous le bouton Dark Mode */
+        }
+
+        body.dark-mode .auth-container {
+            background: var(--container-bg-dark);
+            box-shadow: 0 4px 20px var(--shadow-dark);
+        }
+
+        .auth-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2.5em;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 0.2s;
+        }
+
+        .auth-logo img {
+            max-width: 90px;
+            margin-bottom: 0.6em;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .auth-logo-title {
+            font-family: 'Lora', serif;
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        body.dark-mode .auth-logo-title {
+            color: var(--text-dark);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2.5em;
+            font-size: 2em;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 0.4s;
+        }
+
+        body.dark-mode h2 {
+            color: var(--text-dark);
+        }
+
+        form {
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards 0.6s;
+        }
+
+        form label {
+            font-weight: 400;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 0.4em;
+            font-size: 1.1em;
+            text-align: left;
+            width: 100%;
+        }
+
+        body.dark-mode form label {
+            color: var(--text-dark);
+        }
+
+        form input {
+            width: 100%;
+            padding: 0.75em;
+            margin-bottom: 1.3em;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--container-bg);
+            color: var(--text-light);
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode form input {
+            border-color: var(--border-dark);
+            background: var(--container-bg-dark);
+            color: var(--text-dark);
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.1);
+        }
+
+        button {
+            width: 100%;
+            max-width: 380px;
+            background: var(--text-light);
+            color: var(--container-bg);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15em;
+            font-weight: 400;
+            padding: 0.85em;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode button {
+            background: var(--accent);
+            color: var(--text-dark);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--shadow-light);
+        }
+
+        body.dark-mode button:hover {
+            box-shadow: 0 6px 15px var(--shadow-dark);
+        }
+
+        .auth-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5em;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95em;
+            font-weight: 300;
+            transition: color 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 0.8s;
+        }
+
+        body.dark-mode .auth-link {
+            color: var(--text-dark);
+        }
+
+        .auth-link:hover {
+            color: #666666;
+        }
+
+        body.dark-mode .auth-link:hover {
+            color: #b0b0b0;
+        }
+
+        .flash {
+            text-align: center;
+            color: #8a4a4a;
+            font-weight: 400;
+            margin-bottom: 1.5em;
+            font-size: 1em;
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards 0.2s;
+        }
+
+        body.dark-mode .flash {
+            color: #d47a7a;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 2em;
+                min-height: 90vh;
+            }
+            form, button {
+                max-width: 100%;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            .dark-mode-toggle {
+                top: 1em;
+                right: 1em;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.querySelector('.dark-mode-toggle');
+            const body = document.body;
+
+            toggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+            });
+
+            // Charger le mode préféré depuis le localStorage
+            if (localStorage.getItem('darkMode') === 'true') {
+                body.classList.add('dark-mode');
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="dark-mode-toggle">🌑</div>
+    <div class="auth-container">
+        <div class="auth-logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <div class="auth-logo-title">Cahier de Texte</div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for cat, msg in messages %}
+              <div class="flash">{{ msg }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <h2>Connexion</h2>
+        {% block content %}
+        <form>
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" placeholder="chefdep">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="****">
+            <button type="submit">Se connecter</button>
+            <a href="#" class="auth-link">Pas encore de compte ? Inscription</a>
+        </form>
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Séances Planifiées{% endblock %}
+
+{% block content %}
+<h3 class="text-center mb-4">📅 Toutes les Séances</h3>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Heure</th>
+            <th>Cours</th>
+            <th>Enseignant</th>
+            <th>Durée</th>
+            <th>Contenu</th>
+            <th>Validée ?</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in seances %}
+        <tr>
+            <td>{{ s['date'] }}</td>
+            <td>{{ s['heure_debut'] }} - {{ s['heure_fin'] }}</td>
+            <td>{{ s['cours'] }}</td>
+            <td>{{ s['enseignant'] or "Non assigné" }}</td>
+            <td>{{ s['duree'] }} h</td>
+            <td>{{ s['contenu'] }}</td>
+            <td>{{ "✅" if s['valide'] else "⏳" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

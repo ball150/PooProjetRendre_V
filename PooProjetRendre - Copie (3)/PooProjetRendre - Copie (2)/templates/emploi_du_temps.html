@@ -1,0 +1,91 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Emploi du Temps{% endblock %}
+{% block page_title %}📆 Emploi du Temps Hebdomadaire{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow border-0 mb-5">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Emploi du Temps</h5>
+            <a href="{{ url_for('generer_emploi') }}" class="btn btn-light btn-sm">
+                <i class="fas fa-sync-alt"></i> Régénérer
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle m-0">
+                    <thead class="table-light">
+                        <tr class="bg-light text-dark">
+                            <th>Heure</th>
+                            {% for jour in ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"] %}
+                                <th>{{ jour }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for heure in ["08:00", "10:00", "12:00", "14:00", "16:00"] %}
+                        <tr>
+                            <th class="bg-light text-dark">{{ heure }}</th>
+                            {% for jour in ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"] %}
+                            <td>
+                                {% set trouve = false %}
+                                {% for item in emploi %}
+                                    {% if item["jour"] == jour and item["heure"] == heure %}
+                                        <strong>{{ item["cours"] }}</strong><br>
+                                        👨‍🏫 {{ item["enseignant"] or "?" }}
+                                        {% set trouve = true %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if not trouve %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{{ url_for('chef') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+        </a>
+    </div>
+</div>
+
+<style>
+    .card-header h5 {
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    table th, table td {
+        vertical-align: middle !important;
+    }
+
+    .table thead th {
+        background: #f0f4ff;
+        font-weight: 600;
+    }
+
+    .table tbody td {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:nth-child(even) td {
+        background-color: #f9faff;
+    }
+
+    .btn-outline-primary {
+        border-width: 2px;
+    }
+
+    .btn-outline-primary:hover {
+        background: #4361ee;
+        color: white;
+    }
+</style>
+{% endblock %}

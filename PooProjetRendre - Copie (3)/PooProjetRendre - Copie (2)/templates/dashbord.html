@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📊 Tableau de Bord du Chef de Département</h2>
+
+<ul>
+    <li><strong>Total de séances :</strong> {{ total_seances }}</li>
+    <li><strong>✅ Séances validées :</strong> {{ seances_validees }}</li>
+    <li><strong>❌ Séances non validées :</strong> {{ seances_non_validees }}</li>
+    <li><strong>📚 Total de cours :</strong> {{ total_cours }}</li>
+    <li><strong>👨‍🏫 Total enseignants :</strong> {{ total_enseignants }}</li>
+</ul>
+{% endblock %}
+

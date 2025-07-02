@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Espace Responsable{% endblock %}
+
+{% block sidebar %}
+<a href="{{ url_for('responsable') }}" class="{% if request.endpoint == 'responsable' %}active{% endif %}">🏠 Tableau de bord</a>
+<a href="{{ url_for('cahier_responsable') }}" class="{% if request.endpoint == 'cahier_responsable' %}active{% endif %}">📒 Cahier de texte</a>
+<a href="{{ url_for('logout') }}" class="logout">🚪 Se déconnecter</a>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container" style="max-width: 850px; margin:0 auto;">
+    <div class="dashboard-header text-center mb-4" style="background: linear-gradient(135deg, #4361ee, #3f37c9); color:white; border-radius:12px; padding:2.5rem 1.5rem 2rem 1.5rem;">
+        <h1 style="font-size:2.4rem;">Bienvenue, {{ nom or current_user.username }}</h1>
+        <p style="color:#dbeafe; font-size:1.1rem;">Espace <strong>{{ role or 'Responsable' }}</strong> — Vous pouvez valider ou refuser les séances proposées par les enseignants.</p>
+    </div>
+
+    <div class="row g-4 mb-5 justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm text-center p-4" style="border-radius:14px;">
+                <div class="h1 mb-3" style="font-size:3rem;">📒</div>
+                <h5 class="mb-2">Cahier de texte</h5>
+                <p class="mb-4" style="color:#6c757d;">Consultez, validez ou refusez les séances renseignées par les enseignants.<br>
+                Toutes les demandes en attente sont listées ici.</p>
+                <a href="{{ url_for('cahier_responsable') }}" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-arrow-right-short"></i> Accéder au cahier de texte
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-section text-center mt-4" style="background:#fff; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(67, 97, 238, 0.09);">
+        <h3 style="color:#4361ee;">Aide rapide</h3>
+        <p>
+            <span style="color:#4cc9f0; font-size:1.4rem;">➤</span> <b>Le cahier de texte</b> vous liste toutes les séances à valider.<br>
+            <span style="color:#4cc9f0; font-size:1.4rem;">➤</span> Pour chaque séance, <b>cliquez</b> sur “Valider” ou “Rejeter” selon le contenu fourni par l’enseignant.<br>
+            <span style="color:#4cc9f0; font-size:1.4rem;">➤</span> Vous pouvez retrouver l’historique des validations dans le même onglet.
+        </p>
+    </div>
+</div>
+
+<style>
+    .dashboard-header h1 {
+        font-weight:700;
+        letter-spacing:1px;
+        margin-bottom:0.4rem;
+    }
+    .dashboard-section h3 {
+        font-size:1.25rem;
+        margin-bottom:0.9rem;
+    }
+    .btn-primary {
+        background: linear-gradient(90deg, #4361ee 60%, #4cc9f0 100%);
+        border:none;
+    }
+    .btn-primary:hover {
+        background:linear-gradient(90deg,#3f37c9 60%,#4895ef 100%);
+        color:white;
+    }
+</style>
+{% endblock %}

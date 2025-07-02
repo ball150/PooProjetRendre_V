@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord Enseignant{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1>Tableau de bord Enseignant</h1>
+        <div class="welcome-message">
+            <h2>Bonjour, {{ nom or current_user.username }}</h2>
+            <p>Bienvenue sur votre espace pédagogique. Voici votre activité récente et vos raccourcis.</p>
+        </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-value">{{ nb_cours or "--" }}</div>
+            <div class="stat-label">Cours attribués</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 100%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value">{{ nb_seances or "--" }}</div>
+            <div class="stat-label">Séances effectuées</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: 80%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-value">{{ nb_heures or "--" }}</div>
+            <div class="stat-label">Heures réalisées</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: {{ progression_heures or 0 }}%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🕒</div>
+            <div class="stat-value">{{ nb_seances_attente or "0" }}</div>
+            <div class="stat-label">Séances en attente</div>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: {{ attente_percent or 0 }}%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-columns">
+        <!-- Left: Séances du jour et Alertes -->
+        <div class="left-column">
+            <div class="dashboard-section">
+                <h3>Séances du jour</h3>
+                {% if seances_du_jour %}
+                    {% for s in seances_du_jour %}
+                        <div class="session-item">
+                            <div class="session-time">{{ s.heure_debut }} - {{ s.heure_fin }}</div>
+                            <div class="session-details">
+                                <div class="session-title">{{ s.cours }}</div>
+                                <div class="session-teacher">{{ s.salle }}</div>
+                            </div>
+                            <div class="session-status {{ "valide" if s.statut == "validé" else "pending" }}">
+                                {{ s.statut|capitalize }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-muted">Aucune séance prévue aujourd'hui.</div>
+                {% endif %}
+            </div>
+            <div class="dashboard-section alerts-section">
+                <h3>Alertes</h3>
+                {% if alertes %}
+                    {% for alerte in alertes %}
+                        <div class="alert-item">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>{{ alerte }}</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-muted">Aucune alerte pour le moment.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right: Quick Actions -->
+        <div class="right-column">
+            <div class="dashboard-section">
+                <h3>Actions rapides</h3>
+                <div class="quick-actions">
+                    <a href="{{ url_for('mes_cours') }}" class="action-btn">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Mes cours</span>
+                    </a>
+                    <a href="{{ url_for('suivi_heures') }}" class="action-btn">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Suivi des heures</span>
+                    </a>
+                    <a href="{{ url_for('toutes_seances_enseignant') }}" class="action-btn">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Toutes mes séances</span>
+                    </a>
+                    {% if dernier_cours_id %}
+                    <a href="{{ url_for('fiche_suivi_cours', cours_id=dernier_cours_id) }}" class="action-btn">
+                        <i class="fa-solid fa-file-alt"></i>
+                        <span>Fiche de suivi<br><small>(dernier cours)</small></span>
+                    </a>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Reprend les styles du dashboard chef (ou mets en commun dans ton CSS) */
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    .dashboard-header { margin-bottom: 2rem; }
+    .dashboard-header h1 { font-size: 2.2rem; color: #4361ee; }
+    .welcome-message h2 { font-size: 1.3rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .welcome-message p { color: #adb5bd; }
+    .stats-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.3rem; margin-bottom: 2rem;}
+    .stat-card {
+        background: white; border-radius: 12px; padding: 1.2rem 1.3rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s;
+    }
+    .stat-card:hover { transform: translateY(-5px);}
+    .stat-icon { font-size: 2rem; margin-bottom: 0.2rem;}
+    .stat-value { font-size: 1.6rem; font-weight: 700;}
+    .stat-label { color: #adb5bd; font-size: 0.93rem;}
+    .stat-progress { height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #4361ee, #4895ef);}
+    .dashboard-columns { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+    @media (max-width: 992px) { .dashboard-columns { grid-template-columns: 1fr; } }
+    .dashboard-section { background: white; border-radius: 12px; padding: 1.1rem 1.3rem; margin-bottom: 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05);}
+    .dashboard-section h3 { font-size: 1.12rem; margin-bottom: 1rem; color: #4361ee; border-bottom: 1px solid #e9ecef; padding-bottom: 0.5rem;}
+    .session-item { display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid #e9ecef; }
+    .session-item:last-child { border-bottom: none;}
+    .session-time { width: 95px; font-weight: 500;}
+    .session-details { flex-grow: 1;}
+    .session-title { font-weight: 600;}
+    .session-teacher { font-size: 0.88rem; color: #adb5bd;}
+    .session-status { padding: 0.18rem 0.7rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;}
+    .session-status.valid { background: #e7fafd; color: #4cc9f0;}
+    .session-status.pending { background: #f7d8ea; color: #f72585;}
+    .alerts-section { background: #fff9f9;}
+    .alert-item { display: flex; align-items: center; padding: 0.7rem 0;}
+    .alert-item i { color: #f72585; margin-right: 0.7rem;}
+    .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem;}
+    .action-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.1rem 0.4rem; background: white; border: 1px solid #e9ecef; border-radius: 8px; color: #2b2d42; text-decoration: none; transition: all 0.3s;}
+    .action-btn:hover { background: #4361ee; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(67,97,238,0.16);}
+    .action-btn.disabled { background: #f0f0f0 !important; color: #999 !important; border-color: #eee;}
+    .action-btn i { font-size: 1.4rem; margin-bottom: 0.5rem;}
+    .action-btn span { font-size: 0.91rem; text-align: center;}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animation des cartes de stats
+        document.querySelectorAll('.stat-card').forEach((card, i) => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                card.style.opacity = 1;
+                card.style.transform = 'translateY(0)';
+                card.style.transition = 'all 0.5s';
+            }, i * 130);
+        });
+        // Animation des séances
+        document.querySelectorAll('.session-item').forEach((item, i) => {
+            item.style.opacity = 0;
+            item.style.transform = 'translateX(-20px)';
+            setTimeout(() => {
+                item.style.opacity = 1;
+                item.style.transform = 'translateX(0)';
+                item.style.transition = 'all 0.4s';
+            }, i * 170 + 300);
+        });
+    });
+</script>
+{% endblock %}

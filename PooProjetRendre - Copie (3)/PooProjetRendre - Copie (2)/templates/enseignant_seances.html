@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Séances du cours{% endblock %}
+
+{% block content %}
+<h3 class="text-center my-3">📝 Séances du cours : {{ cours.name }}</h3>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Date</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Durée</th>
+            <th>Contenu</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for seance in seances %}
+        <tr>
+            <td>{{ seance.date }}</td>
+            <td>{{ seance.heure_debut }}</td>
+            <td>{{ seance.heure_fin }}</td>
+            <td>{{ seance.duree }}h</td>
+            <td>
+                <form method="post" class="d-flex">
+                    <input type="hidden" name="session_id" value="{{ seance.id }}">
+                    <input type="text" name="contenu" class="form-control me-2" value="{{ seance.contenu or '' }}" required>
+                    <button type="submit" class="btn btn-sm btn-success">💾 Enregistrer</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('enseignant') }}" class="btn btn-secondary mt-3">⬅ Retour</a>
+{% endblock %}

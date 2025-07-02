@@ -1,0 +1,632 @@
+{% extends "auth_base.html" %}
+{% block title %}Connexion — Cahier de Texte Numérique{% endblock %}
+
+{% block content %}
+<div class="luxury-auth-container">
+    <!-- Fond animé de particules -->
+    <div id="particles-js"></div>
+
+    <div class="luxury-content">
+        <!-- Logo avec animation élégante -->
+        <div class="luxury-logo">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="luxury-logo-img">
+                <div class="logo-shine"></div>
+            </div>
+            <h1 class="luxury-logo-title">Cahier de Texte</h1>
+        </div>
+
+        <!-- Messages flash avec animation -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for cat, msg in messages %}
+              <div class="luxury-alert luxury-alert-{{ cat }} animated fadeInDown">
+                <i class="fas fa-bell"></i> {{ msg }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="luxury-grid">
+            <!-- Formulaire de connexion - Côté gauche -->
+            <div class="luxury-form-container">
+                <div class="luxury-card">
+                    <div class="luxury-card-header">
+                        <h2>Connexion</h2>
+                        <div class="header-decoration"></div>
+                    </div>
+                    <div class="luxury-card-body">
+                        <form method="POST" class="luxury-form">
+                            <div class="luxury-form-group">
+                                <label for="username">Nom d'utilisateur</label>
+                                <div class="luxury-input-container">
+                                    <input type="text" id="username" name="username" required autofocus>
+                                    <i class="fas fa-user luxury-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="luxury-form-group">
+                                <label for="password">Mot de passe</label>
+                                <div class="luxury-input-container">
+                                    <input type="password" id="password" name="password" required>
+                                    <i class="fas fa-lock luxury-icon"></i>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="luxury-btn">
+                                <span>Se connecter</span>
+                                <i class="fas fa-arrow-right luxury-btn-icon"></i>
+                            </button>
+
+                            <div class="luxury-links">
+                                <a href="#" class="luxury-link">Mot de passe oublié ?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section À propos - Côté droit -->
+            <div class="luxury-about-container">
+                <div class="luxury-about-card">
+                    <div class="luxury-about-header">
+                        <h2><i class="fas fa-info-circle"></i> À propos de la plateforme</h2>
+                        <div class="luxury-divider"></div>
+                    </div>
+
+                    <div class="luxury-about-content">
+                        <p class="luxury-intro"><strong>Cahier de Texte Numérique</strong> est une initiative marquante développée par l'UFR Sciences de l'Ingénieur de l'Université Iba Der Thiam de Thiès. Cette solution numérique, conçue pour révolutionner la gestion pédagogique, offre aux enseignants, étudiants et responsables un outil intuitif et sécurisé. Issue d'un cadre académique exigeant, elle s'inscrit dans une démarche de modernisation éducative, transcendant les contraintes du cahier traditionnel.</p>
+
+                        <div class="luxury-section">
+                            <h3><i class="fas fa-seedling"></i> Origines et développement</h3>
+                            <p>Conçu en 2024 comme un projet d'examen dans le cadre de la Licence 2 Géomatique, Cahier de Texte Numérique a été assigné aux étudiants par l'UFR SI pour évaluer leurs compétences en programmation orientée objet avec Python (Django) et en gestion de bases de données comme MySQL. Sous la supervision d'enseignants, les équipes ont utilisé des environnements de développement tels qu'IntelliJ IDEA ou VSCode, ainsi que GitHub pour la gestion collaborative, transformant un exercice académique en une solution fonctionnelle et prometteuse.</p>
+                        </div>
+
+                        <div class="luxury-section">
+                            <h3><i class="fas fa-lightbulb"></i> Objectifs et valeurs</h3>
+                            <ul class="luxury-list">
+                                <li><strong>Centralisation avancée</strong> : Une gestion centralisée des ressources pédagogiques, accessible depuis n'importe quel appareil.</li>
+                                <li><strong>Efficacité accrue</strong> : Une planification rapide des séances et des notifications en temps réel.</li>
+                                <li><strong>Analyse approfondie</strong> : Des statistiques détaillées sur les progressions et les taux de présence.</li>
+                                <li><strong>Engagement durable</strong> : Une réduction significative de l'usage du papier, favorisant une approche écologique.</li>
+                            </ul>
+                        </div>
+
+                        <div class="luxury-section">
+                            <h3><i class="fas fa-star"></i> Avantages et perspectives</h3>
+                            <ul class="luxury-list">
+                                <li><strong>Interface personnalisée</strong> : Un tableau de bord adaptable aux besoins de chaque utilisateur.</li>
+                                <li><strong>Sécurité renforcée</strong> : Une protection des données conforme aux standards les plus exigeants.</li>
+                                <li><strong>Fonctionnalités pratiques</strong> : Des exports PDF et Excel simplifiés pour une traçabilité optimale.</li>
+                                <li><strong>Collaboration structurée</strong> : Une plateforme favorisant les échanges entre enseignants et étudiants.</li>
+                                <li><strong>Accessibilité universelle</strong> : Une compatibilité avec mobile, tablette et PC pour une flexibilité totale.</li>
+                            </ul>
+                            <p>En ce mois de juin 2025, suite à sa présentation comme livrable d'examen, nous explorons des opportunités d'évolution pour répondre aux besoins futurs de la communauté universitaire. Rejoignez-nous dans cette démarche d'excellence éducative.</p>
+                        </div>
+
+                        <div class="luxury-footer">
+                            <p><i class="fas fa-university"></i> UFR SI — Université Iba Der Thiam de Thiès</p>
+                            <p><i class="fas fa-envelope"></i> Contact : <a href="mailto:ton.email@ufrsi.edu.sn">ton.email@ufrsi.edu.sn</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS -->
+<style>
+    /* Police élégante */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3a0ca3;
+        --accent-color: #7209b7;
+        --text-color: #2b2d42;
+        --light-color: #f8f9fa;
+        --success-color: #4cc9f0;
+        --info-color: #4895ef;
+        --warning-color: #f72585;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+        background-color: #f5f7ff;
+        color: var(--text-color);
+        overflow-x: hidden;
+    }
+
+    /* Conteneur principal */
+    .luxury-auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 2rem;
+    }
+
+    /* Animation de particules */
+    #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        background: linear-gradient(135deg, #f5f7ff 0%, #e6e9ff 100%);
+    }
+
+    /* Contenu */
+    .luxury-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Logo */
+    .luxury-logo {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+    }
+
+    .logo-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .luxury-logo-img {
+        height: 100px;
+        filter: drop-shadow(0 5px 15px rgba(67, 97, 238, 0.3));
+        transition: all 0.5s ease;
+        z-index: 2;
+        position: relative;
+    }
+
+    .logo-shine {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        z-index: 1;
+    }
+
+    .logo-container:hover .luxury-logo-img {
+        transform: scale(1.05) rotate(-5deg);
+    }
+
+    .logo-container:hover .logo-shine {
+        opacity: 1;
+    }
+
+    .luxury-logo-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin-top: 1rem;
+        background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 10px rgba(67, 97, 238, 0.1);
+    }
+
+    /* Grille */
+    .luxury-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 2rem;
+    }
+
+    /* Carte */
+    .luxury-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(67, 97, 238, 0.1);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        z-index: 1;
+    }
+
+    .luxury-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(67, 97, 238, 0.2);
+    }
+
+    .luxury-card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 1.5rem 2rem;
+        position: relative;
+    }
+
+    .luxury-card-header h2 {
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    .header-decoration {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--accent-color), rgba(255, 255, 255, 0.5));
+    }
+
+    .luxury-card-body {
+        padding: 2rem;
+    }
+
+    /* Formulaire */
+    .luxury-form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .luxury-form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+
+    .luxury-input-container {
+        position: relative;
+    }
+
+    .luxury-input-container input {
+        width: 100%;
+        padding: 1rem 1rem 1rem 3rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
+    }
+
+    .luxury-input-container input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        outline: none;
+        background-color: white;
+    }
+
+    .luxury-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+    }
+
+    /* Bouton */
+    .luxury-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .luxury-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: all 0.5s ease;
+    }
+
+    .luxury-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    .luxury-btn:hover::before {
+        left: 100%;
+    }
+
+    .luxury-btn-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .luxury-btn:hover .luxury-btn-icon {
+        transform: translateX(5px);
+    }
+
+    /* Liens */
+    .luxury-links {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+    .luxury-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .luxury-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+    }
+
+    .luxury-link:hover::after {
+        width: 100%;
+    }
+
+    /* Section À propos */
+    .luxury-about-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(67, 97, 238, 0.1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .luxury-about-header {
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    }
+
+    .luxury-about-header h2 {
+        color: var(--secondary-color);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .luxury-divider {
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        margin-top: 1rem;
+        border-radius: 3px;
+    }
+
+    .luxury-about-content {
+        padding: 2rem;
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    .luxury-intro {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+    }
+
+    .luxury-section {
+        margin-bottom: 2rem;
+    }
+
+    .luxury-section h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .luxury-list {
+        list-style-type: none;
+        margin-left: 1.5rem;
+    }
+
+    .luxury-list li {
+        margin-bottom: 0.8rem;
+        position: relative;
+        padding-left: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .luxury-list li::before {
+        content: '•';
+        color: var(--accent-color);
+        font-size: 1.5rem;
+        position: absolute;
+        left: 0;
+        top: -2px;
+    }
+
+    .luxury-footer {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px dashed #ddd;
+        font-size: 0.9rem;
+    }
+
+    .luxury-footer p {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .luxury-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    /* Alertes */
+    .luxury-alert {
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        animation-duration: 0.5s;
+    }
+
+    .luxury-alert i {
+        font-size: 1.2rem;
+    }
+
+    .luxury-alert-success {
+        background-color: rgba(76, 201, 240, 0.1);
+        border-left: 4px solid var(--success-color);
+        color: var(--success-color);
+    }
+
+    .luxury-alert-error {
+        background-color: rgba(247, 37, 133, 0.1);
+        border-left: 4px solid var(--warning-color);
+        color: var(--warning-color);
+    }
+
+    /* Barre de défilement */
+    .luxury-about-content::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .luxury-about-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .luxury-about-content::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 10px;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animated {
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+    }
+
+    .fadeInDown {
+        animation-name: fadeInDown;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .luxury-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .luxury-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .luxury-logo-img {
+            height: 80px;
+        }
+
+        .luxury-logo-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .luxury-auth-container {
+            padding: 1rem;
+        }
+
+        .luxury-card-body, .luxury-about-content {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<!-- JavaScript pour les particules et animations -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    // Initialisation des particules
+    document.addEventListener('DOMContentLoaded', function() {
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#4361ee" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#4361ee", opacity: 0.3, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+
+        // Animation des sections au défilement
+        const sections = document.querySelectorAll('.luxury-section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.5s ease';
+            observer.observe(section);
+        });
+    });
+</script>
+{% endblock %}
